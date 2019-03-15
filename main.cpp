@@ -2,7 +2,7 @@
 #include <vector>
 #include <algorithm>
 
-using namespace std; // Bora tipo nao escrever 'std::' em tudo ya?
+using namespace std;
 
 // ###################### Grafos ################################################
 typedef unsigned int Int;
@@ -24,32 +24,42 @@ class Router
     ~Router() {}
 };
 
-int main()
+void readInput(Int &routers_num, Int &connect_num, vector<Router *> &routers)
 {
-    Int routers_num = 0;
-    Int connect_num = 0;
 
     printf("Reading\n");
 
-    scanf("%ud", &routers_num);
-    scanf("%ud", &connect_num);
+    if (!scanf("%u", &routers_num) || !scanf("%u", &connect_num))
+        exit(-1);
+    routers.resize(routers_num);
+
     printf("Routers: %d\nConnections: %d\n", routers_num, connect_num);
 
-    // Create array of router pointers
-    vector<Router *> routers = vector<Router *>(routers_num);
     // Initialize the fuckers
+
     for (Int i = 0; i < routers_num; i++)
         routers[i] = new Router(i + 1);
 
-    while (connect_num-- > 0)
+    Int routes[2] = {0};
+    while (scanf("%u %u", &routes[0], &routes[1]) > 0)
     {
-        Int routes[2] = {0};
-        scanf("%d %d", &routes[0], &routes[1]);
+        --connect_num;
 
         // Update routes
         (*routers[routes[0] - 1]).addConnection(routes[1]);
         (*routers[routes[1] - 1]).addConnection(routes[0]);
-    }
+    }    
+    if (connect_num != 0)
+        exit(-1);    
+}
+
+int main()
+{
+    // Create array of router pointers
+    vector<Router *> routers = vector<Router *>();
+    Int routers_num = 0;
+    Int connect_num = 0;
+    readInput(routers_num, connect_num, routers);
 
     return 0;
 }
