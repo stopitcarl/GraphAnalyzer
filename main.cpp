@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <string>
+#include <stack>
 
 using namespace std;
 
@@ -82,6 +83,34 @@ void readInput(int &routers_num, int &connect_num, vector<Node *> &routers)
         exit(-1);
 }
 
+void Tarjan_Visit(int &visited, int* d, int* low, Node *router, int current, std::stack<Node*> &L) {
+    Node curr = *router;
+    vector<int> connections = curr.getConnections();
+
+    d[current] = low[current] = visited;
+    visited++;
+    L.push(router);
+    // TO BE CONTINUED...
+}
+
+void SCC_Tarjan(int routers_num, vector<Node *> routers) {
+    int visited = 0;
+    std::stack<Node*> L;
+    int d[routers_num];
+    int low[routers_num];
+    int i;
+
+    for (i = 0; i < routers_num; i++) 
+        d[i] = -1;
+    for (i = 0; i < routers_num; i++)
+        low[i] = -1;;
+    for (int i = 0; i < routers_num; i++) 
+        if (d[i] == -1) {
+            Tarjan_Visit(visited, d, low, routers[i], i, L);
+        }
+}
+
+
 int main()
 {
     // Create array of router pointers
@@ -90,11 +119,13 @@ int main()
     int connect_num = 0;
     readInput(routers_num, connect_num, nodes);
 
-    for (Node *node : nodes)
-    {
-        cout << (*node).toString() << endl;
-    }
-    DFS(nodes[0], nodes);
+    SCC_Tarjan(routers_num, nodes);
+
+    // for (Node *node : nodes)
+    // {
+    //     cout << (*node).toString() << endl;
+    // }
+    // //DFS(nodes[0], nodes);
 
     return 0;
 }
