@@ -1,30 +1,59 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <string>
 
 using namespace std;
 
-// ###################### Grafos ################################################
-typedef unsigned int Int;
-
-class Router;
-
-class Router
+// ###################### Node ################################################
+class Node
 {
     int _id;
-    vector<Int> _connects;
+    vector<int> _connects;
+    bool _visited = false;
 
   public:
-    Router(Int id) : _id(id) { _connects = vector<Int>(); }
-    void addConnection(Int id)
+    Node(int id) : _id(id) { _connects = vector<int>(); }
+    void addConnection(int id) { _connects.push_back(id); }
+    int getId() { return _id; }
+    bool isVisited() { return _visited; }
+    void visit() { _visited = true; }
+    vector<int> getConnections() { return _connects; }
+    string toString()
     {
-        _connects.push_back(id);
+        string a = "Id:";
+        a += to_string(_id) + "\nvisited:" + (_visited ? "true" : "false") + "\nconnections: " + to_string(_connects.size());
+        return a;
     }
 
-    ~Router() {}
+    ~Node() {}
 };
 
-void readInput(Int &routers_num, Int &connect_num, vector<Router *> &routers)
+void visit(Node *router)
+{
+    (*router).visit();
+    printf("Node %d has been visited\n", (*router).getId());
+}
+
+void DFS(Node *router, vector<Node *> routers)
+{
+    Node curr = *router;
+    vector<int> connections = curr.getConnections();
+    visit(router);
+    for (int i : connections)
+    {
+        printf("DFS loop %d\n", i);
+
+        Node *r = routers[i - 1];
+        if (!(*r).isVisited())
+        {
+            printf("DFS start on %d\n", i);
+            DFS(r, routers);
+        }
+    }
+}
+
+void readInput(int &routers_num, int &connect_num, vector<Node *> &routers)
 {
 
     printf("Reading\n");
@@ -33,14 +62,13 @@ void readInput(Int &routers_num, Int &connect_num, vector<Router *> &routers)
         exit(-1);
     routers.resize(routers_num);
 
-    printf("Routers: %d\nConnections: %d\n", routers_num, connect_num);
+    printf("Nodes: %d\nConnections: %d\n", routers_num, connect_num);
 
-    // Initialize the fuckers
+    // Initialize the nodes
+    for (int i = 0; i < routers_num; i++)
+        routers[i] = new Node(i + 1);
 
-    for (Int i = 0; i < routers_num; i++)
-        routers[i] = new Router(i + 1);
-
-    Int routes[2] = {0};
+    int routes[2] = {0};
     while (scanf("%u %u", &routes[0], &routes[1]) > 0)
     {
         --connect_num;
@@ -48,18 +76,25 @@ void readInput(Int &routers_num, Int &connect_num, vector<Router *> &routers)
         // Update routes
         (*routers[routes[0] - 1]).addConnection(routes[1]);
         (*routers[routes[1] - 1]).addConnection(routes[0]);
-    }    
+    }
+
     if (connect_num != 0)
-        exit(-1);    
+        exit(-1);
 }
 
 int main()
 {
     // Create array of router pointers
-    vector<Router *> routers = vector<Router *>();
-    Int routers_num = 0;
-    Int connect_num = 0;
-    readInput(routers_num, connect_num, routers);
+    vector<Node *> nodes = vector<Node *>();
+    int routers_num = 0;
+    int connect_num = 0;
+    readInput(routers_num, connect_num, nodes);
+
+    for (Node *node : nodes)
+    {
+        cout << (*node).toString() << endl;
+    }
+    DFS(nodes[0], nodes);
 
     return 0;
 }
