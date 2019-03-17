@@ -2,9 +2,22 @@
 #include <vector>
 #include <algorithm>
 #include <string>
-#include <stack>
+#include <deque>
+
+#define EXISTS(a, n) (find(begin(a), end(a), n) != end(a))
+#define MIN(a, b) (a < b ? a : b)
 
 using namespace std;
+
+// ###################### Global variables ################################################
+class Node;
+int nodesNum;
+int connectNum;
+vector<Node *> nodes;
+deque<int> dequeL;
+int *d;
+int *low;
+int biggestSCC;
 
 // ###################### Node ################################################
 class Node
@@ -15,11 +28,12 @@ class Node
 
   public:
     Node(int id) : _id(id) { _connects = vector<int>(); }
-    void addConnection(int id) { _connects.push_back(id); }
+    void addConnection(int index) { _connects.push_back(index); }
     int getId() { return _id; }
     bool isVisited() { return _visited; }
     void visit() { _visited = true; }
     vector<int> getConnections() { return _connects; }
+
     string toString()
     {
         string a = "Id:";
@@ -36,96 +50,98 @@ void visit(Node *router)
     printf("Node %d has been visited\n", (*router).getId());
 }
 
-void DFS(Node *router, vector<Node *> routers)
-{
-    Node curr = *router;
-    vector<int> connections = curr.getConnections();
-    visit(router);
-    for (int i : connections)
-    {
-        printf("DFS loop %d\n", i);
-
-        Node *r = routers[i - 1];
-        if (!(*r).isVisited())
-        {
-            printf("DFS start on %d\n", i);
-            DFS(r, routers);
-        }
-    }
-}
-
-void readInput(int &routers_num, int &connect_num, vector<Node *> &routers)
+void readInput()
 {
 
     printf("Reading\n");
 
-    if (!scanf("%u", &routers_num) || !scanf("%u", &connect_num))
+    if (!scanf("%u", &nodesNum) || !scanf("%u", &connectNum))
         exit(-1);
-    routers.resize(routers_num);
+    nodes.resize(nodesNum);
 
-    printf("Nodes: %d\nConnections: %d\n", routers_num, connect_num);
+    printf("Nodes: %d\nConnections: %d\n", nodesNum, connectNum);
 
     // Initialize the nodes
-    for (int i = 0; i < routers_num; i++)
-        routers[i] = new Node(i + 1);
+    for (int i = 0; i < nodesNum; i++)
+        nodes[i] = new Node(i + 1);
 
     int routes[2] = {0};
     while (scanf("%u %u", &routes[0], &routes[1]) > 0)
     {
-        --connect_num;
+        --connectNum;
 
         // Update routes
-        (*routers[routes[0] - 1]).addConnection(routes[1]);
-        (*routers[routes[1] - 1]).addConnection(routes[0]);
+        (*nodes[routes[0] - 1]).addConnection(routes[1] - 1);
+        (*nodes[routes[1] - 1]).addConnection(routes[0] - 1);
     }
 
-    if (connect_num != 0)
+    if (connectNum != 0)
         exit(-1);
 }
 
-void Tarjan_Visit(int &visited, int* d, int* low, Node *router, int current, std::stack<Node*> &L) {
-    Node curr = *router;
+void tarjanVisit(int &visited, int &current)
+{
+    Node curr = *(nodes[current]);
     vector<int> connections = curr.getConnections();
 
     d[current] = low[current] = visited;
-    visited++;
-    L.push(router);
+    visited++; // ???
+    dequeL.push_back(current);
+
+    for (int a : connections)
+    {
+        if (d[a] < 0 || EXISTS(dequeL, a)) // TODO: < 0 is it faster than == -1 ?
+            if (d[a] < 0)
+                tarjanVisit(visited, a);
+        low[current] = MIN(low[current], low[a]);
+    }
+    if (d[current] == low[current])
+    {
+        int v = dequeL.back();
+        int max = v;
+        while (current != v){
+            if (v >)
+        }
+    }
+
     // TO BE CONTINUED...
 }
 
-void SCC_Tarjan(int routers_num, vector<Node *> routers) {
+void SccTarjan(int nodesNum, vector<Node *> routers)
+{
     int visited = 0;
-    std::stack<Node*> L;
-    int d[routers_num];
-    int low[routers_num];
+    dequeL = deque<int>();
+
     int i;
 
-    for (i = 0; i < routers_num; i++) 
+    for (i = 0; i < nodesNum; i++) // TODO: find a cooler way initiliaze
+    {
         d[i] = -1;
-    for (i = 0; i < routers_num; i++)
-        low[i] = -1;;
-    for (int i = 0; i < routers_num; i++) 
-        if (d[i] == -1) {
-            Tarjan_Visit(visited, d, low, routers[i], i, L);
-        }
-}
+        low[i] = -1;
+    }
 
+    for (i = 0; i < nodesNum; i++)
+        if (d[i] == -1)
+            tarjanVisit(visited, i);
+}
 
 int main()
 {
     // Create array of router pointers
-    vector<Node *> nodes = vector<Node *>();
-    int routers_num = 0;
-    int connect_num = 0;
-    readInput(routers_num, connect_num, nodes);
+    nodes = vector<Node *>();
+    nodesNum = 0;
+    connectNum = 0;
+    biggestSCC = 0;
 
-    SCC_Tarjan(routers_num, nodes);
+    readInput();
+    d = new int[nodesNum];
+    low = new int[nodesNum];
 
-    // for (Node *node : nodes)
-    // {
-    //     cout << (*node).toString() << endl;
-    // }
-    // //DFS(nodes[0], nodes);
+    SccTarjan(nodesNum, nodes);
+
+    // Free allocs
+    free(d);
+    free(low);
 
     return 0;
 }
