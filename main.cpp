@@ -9,15 +9,25 @@
 
 using namespace std;
 
+/*
+* Number of SCCs
+* Graph IDs (1 for each)
+* Number articulation points
+* Biggest SCC if all artic. points decide to collectively fuck off to a better place
+*/
+
 // ###################### Global variables ################################################
 class Node;
 int nodesNum;
 int connectNum;
 vector<Node *> nodes;
+vector<int *> SCCs; // {max ID of graph, number of nodes}
+int SccCount;
+int biggestSCC;
 deque<int> dequeL;
 int *d;
 int *low;
-int biggestSCC;
+int *parent;
 
 // ###################### Node ################################################
 class Node
@@ -44,12 +54,16 @@ class Node
     ~Node() {}
 };
 
-void visit(Node *router)
+/*
+class Scc
 {
-    (*router).visit();
-    printf("Node %d has been visited\n", (*router).getId());
-}
+    int id;
+    int root; // TODO: optional?
+    vector<int> nodes;
+};
+*/
 
+// ###################### Input Handling ################################################
 void readInput()
 {
 
@@ -79,6 +93,8 @@ void readInput()
         exit(-1);
 }
 
+// ###################### Algorithms  ################################################
+
 void tarjanVisit(int &visited, int &current)
 {
     Node curr = *(nodes[current]);
@@ -90,21 +106,33 @@ void tarjanVisit(int &visited, int &current)
 
     for (int a : connections)
     {
-        if (d[a] < 0 || EXISTS(dequeL, a)) // TODO: < 0 is it faster than == -1 ?
+        if (d[a] == -1 || EXISTS(dequeL, a))
+        {
             if (d[a] < 0)
                 tarjanVisit(visited, a);
-        low[current] = MIN(low[current], low[a]);
-    }
-    if (d[current] == low[current])
-    {
-        int v = dequeL.back();
-        int max = v;
-        while (current != v){
-            if (v >)
+            low[current] = MIN(low[current], low[a]);
         }
     }
 
-    // TO BE CONTINUED...
+    if (d[current] == low[current])
+    {
+        ++SccCount;
+        int nodeCount = 1;
+        int v = dequeL.back();
+        int max = v;
+        while (current != v)
+        {
+            if (v > max)
+                max = v;
+
+            dequeL.pop_back();
+            v = dequeL.back();
+
+            nodeCount++;
+        }
+
+        SCCs.push_back(new int[2]{max, nodeCount});
+    }
 }
 
 void SccTarjan(int nodesNum, vector<Node *> routers)
@@ -132,16 +160,29 @@ int main()
     nodesNum = 0;
     connectNum = 0;
     biggestSCC = 0;
+    SccCount = 0;
 
     readInput();
     d = new int[nodesNum];
     low = new int[nodesNum];
+    parent = new int[nodesNum];
+    for (int i = 0; i < nodesNum; i++)
+        printf("%d:%d\n", i, parent[i]);
 
     SccTarjan(nodesNum, nodes);
+
+    // Output
+    printf("Scc: %d\n", SccCount);
+    printf("IDS:");
+
+    for (int *scc : SCCs)
+        printf(" %d", scc[0] + 1);
 
     // Free allocs
     free(d);
     free(low);
+    free(parent);
+    SCCs.clear();
 
     return 0;
 }
