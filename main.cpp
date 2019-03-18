@@ -34,26 +34,14 @@ bool *ap;
 // ###################### Node ################################################
 class Node
 {
-    int _id;
+
     vector<int> _connects;
-    bool _visited = false;
 
   public:
-    Node(int id) : _id(id) { _connects = vector<int>(); }
+    Node() { _connects = vector<int>(); }
     void addConnection(int index) { _connects.push_back(index); }
-    int getId() { return _id; }
-    bool isVisited() { return _visited; }
-    void visit() { _visited = true; }
     vector<int> getConnections() { return _connects; }
-
-    string toString()
-    {
-        string a = "Id:";
-        a += to_string(_id) + "\nvisited:" + (_visited ? "true" : "false") + "\nconnections: " + to_string(_connects.size());
-        return a;
-    }
-
-    ~Node() {}
+    ~Node() { _connects.clear(); }
 };
 
 // ###################### Input Handling ################################################
@@ -65,7 +53,7 @@ void readInput()
 
     // Initialize the nodes
     for (int i = 0; i < nodesNum; i++)
-        nodes[i] = new Node(i + 1);
+        nodes[i] = new Node();
 
     int routes[2] = {0, 0};
     while (scanf("%u %u", &routes[0], &routes[1]) > 0)
@@ -75,6 +63,9 @@ void readInput()
         (*nodes[routes[0] - 1]).addConnection(routes[1] - 1);
         (*nodes[routes[1] - 1]).addConnection(routes[0] - 1);
     }
+    // Initialize the nodes
+    for (int i = 0; i < nodesNum; i++)
+        (*nodes[i]).getConnections().shrink_to_fit();
 
     if (connectNum != 0)
         exit(-1);
@@ -82,11 +73,12 @@ void readInput()
 
 // ###################### Algorithms  ################################################
 
-void tarjanVisit(int &visited, int &current)
+int tarjanVisit(int &visited, int &current)
 {
+    int weight = 0;
+
     Node curr = *(nodes[current]);
     vector<int> connections = curr.getConnections();
-
     d[current] = low[current] = visited;
     visited++; // ???
     dequeL.push_back(current);
@@ -94,34 +86,42 @@ void tarjanVisit(int &visited, int &current)
     int children = 0;
     for (int a : connections)
     {
+        //printf("Node %d checking connection %d\n", current + 1, a + 1);
         if (d[a] == -1 || EXISTS(dequeL, a))
         {
             ++children;
             if (d[a] == -1)
             {
+                // printf("Node %d visiting %d\n", current + 1, a + 1);
                 parent[a] = current;
-                tarjanVisit(visited, a);
+                weight += tarjanVisit(visited, a);
+                if (weight > biggestSCC)
+                    biggestSCC = weight;
+                //printf("Callback: Node %d visited %d\n", current + 1, a + 1);
+
+                //printf("Updating low of %d with low[current]=%d or low[%d]=%d\n", current + 1, low[current], a + 1, low[a]);
+                // (1) u is root of DFS tree and has two or more chilren.
+                if (parent[current] == -1 && children > 1 && !ap[current] && !ap[current])
+                {
+                    ap[current] = true;
+                    ++apCount;
+                    //printf("(1)Found AP: %d\n", current + 1);
+                }
+
+                // (2) If u is not root and low value of one of its child is more
+                // than discovery value of u.
+                if (parent[current] != -1 && low[a] >= d[current] && !ap[current])
+                {
+                    ap[current] = true;
+                    ++apCount;
+                    // printf("(2)Found AP: %d\n", current + 1);
+                }
+                low[current] = MIN(low[current], low[a]);
             }
-
-            printf("Node %d: parent[%d]=%d, children=%d, low[a]=%d\n", d[current], current, parent[current], children, low[a]);
-
-            // (1) u is root of DFS tree and has two or more chilren.
-            if (parent[current] == -1 && children > 1 && !ap[current])
+            else
             {
-                ap[current] = true;
-                ++apCount;
-                printf("(1)Found AP: %d\n", current + 1);
+                low[current] = MIN(low[current], d[a]);
             }
-
-            // (2) If u is not root and low value of one of its child is more
-            // than discovery value of u.
-            if (parent[current] != -1 && low[a] >= d[current])
-            {
-                ap[current] = true;
-                ++apCount;
-                printf("(2)Found AP: %d\n", current + 1);
-            }
-            low[current] = MIN(low[current], low[a]);
         }
     }
 
@@ -145,6 +145,10 @@ void tarjanVisit(int &visited, int &current)
 
         SCCs.push_back(new int[3]{max, nodeCount, nodeCountWithDiscount});
     }
+    //printf("Returning from %d with weight: %d\n", current + 1, weight);
+    if (ap[current])
+        return 0;
+    return weight + 1;
 }
 
 void SccTarjan(int nodesNum, vector<Node *> routers)
@@ -162,9 +166,19 @@ void SccTarjan(int nodesNum, vector<Node *> routers)
     }
 
     // Run DFS
+    int weight = 0;
     for (i = 0; i < nodesNum; i++)
         if (d[i] == -1)
-            tarjanVisit(visited, i);
+        {
+            weight = tarjanVisit(visited, i);
+            if (weight > biggestSCC)
+                biggestSCC = weight;
+        }
+}
+
+bool compare(const int *a, const int *b)
+{
+    return a[0] < b[0];
 }
 
 int main()
@@ -186,24 +200,25 @@ int main()
     SccTarjan(nodesNum, nodes);
 
     // Output
-    printf("Scc: %d\n", sccCount);
-    printf("IDS:");
-    int maxDiscountedGraph = 0;
-    for (int *scc : SCCs)
-    {
-        printf(" %d", scc[0] + 1);
-        if (scc[2] > maxDiscountedGraph)
-            maxDiscountedGraph = scc[2];
-    }
-
-    printf("\nAPs: %d\n", apCount);
-    printf("Max Graph: %d\n", maxDiscountedGraph);
+    // Number of SCCs
+    printf("%d\n", sccCount);
+    // Number of IDs
+    sort(SCCs.begin(), SCCs.end(), compare);
+    printf("%d", SCCs.front()[0] + 1);
+    for (vector<int *>::iterator it = SCCs.begin()+1; it != SCCs.end(); ++it)
+        printf(" %d", (*it)[0] + 1);
+    // Number of APs
+    printf("\n%d\n", apCount);
+    // Size of bigges SCC without APs
+    printf("%d\n", biggestSCC);
 
     // Free allocs
     free(d);
     free(low);
     free(parent);
+    free(ap);
     SCCs.clear();
+    nodes.clear();
 
     return 0;
 }

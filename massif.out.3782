@@ -1,0 +1,559 @@
+desc: (none)
+cmd: ./a.out
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=253957683
+mem_heap_B=30088780
+mem_heap_extra_B=10823884
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=2
+#-----------
+time=527191577
+mem_heap_B=31547116
+mem_heap_extra_B=12297556
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=776049387
+mem_heap_B=32871540
+mem_heap_extra_B=13614428
+mem_stacks_B=0
+heap_tree=detailed
+n4: 32871540 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 24000000 0x1092AB: readInput() (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+  n0: 24000000 0x108D52: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n1: 4800000 0x10A2B1: std::vector<Node*, std::allocator<Node*> >::_M_default_append(unsigned long) (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+  n1: 4800000 0x109569: readInput() (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+   n0: 4800000 0x108D52: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n2: 3994164 0x10A112: void std::vector<int, std::allocator<int> >::_M_realloc_insert<int const&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int const&) (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+  n1: 2126772 0x10950A: readInput() (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+   n0: 2126772 0x108D52: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+  n1: 1867392 0x109522: readInput() (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+   n0: 1867392 0x108D52: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n0: 77376 in 4 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=4
+#-----------
+time=1009137179
+mem_heap_B=34106128
+mem_heap_extra_B=14835440
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=5
+#-----------
+time=1204476821
+mem_heap_B=35144200
+mem_heap_extra_B=15873856
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=1498782325
+mem_heap_B=48974476
+mem_heap_extra_B=17105268
+mem_stacks_B=0
+heap_tree=peak
+n8: 48974476 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 24000000 0x1092AB: readInput() (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+  n0: 24000000 0x108D52: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n2: 7496524 0x10A112: void std::vector<int, std::allocator<int> >::_M_realloc_insert<int const&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int const&) (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+  n1: 4002292 0x10950A: readInput() (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+   n0: 4002292 0x108D52: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+  n1: 3494232 0x109522: readInput() (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+   n0: 3494232 0x108D52: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n0: 4800000 0x108E11: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n1: 4800000 0x10A2B1: std::vector<Node*, std::allocator<Node*> >::_M_default_append(unsigned long) (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+  n1: 4800000 0x109569: readInput() (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+   n0: 4800000 0x108D52: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n0: 2400000 0x108D6B: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n0: 2400000 0x108D8B: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n0: 2400000 0x108DAB: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n0: 677952 in 6 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=7
+#-----------
+time=1743657459
+mem_heap_B=49058816
+mem_heap_extra_B=17186448
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=2070464092
+mem_heap_B=49056140
+mem_heap_extra_B=17185172
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=2275150420
+mem_heap_B=49044020
+mem_heap_extra_B=17169220
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=10
+#-----------
+time=2582182947
+mem_heap_B=49029428
+mem_heap_extra_B=17140108
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=2745953702
+mem_heap_B=49040708
+mem_heap_extra_B=17153612
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=3012012423
+mem_heap_B=49033372
+mem_heap_extra_B=17149900
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=3358113358
+mem_heap_B=49030376
+mem_heap_extra_B=17139816
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=3704256428
+mem_heap_B=49060596
+mem_heap_extra_B=17193388
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=15
+#-----------
+time=3906222940
+mem_heap_B=49066140
+mem_heap_extra_B=17199084
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=16
+#-----------
+time=4223528297
+mem_heap_B=49033884
+mem_heap_extra_B=17143396
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=17
+#-----------
+time=4454258717
+mem_heap_B=49013932
+mem_heap_extra_B=17147124
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=4627359581
+mem_heap_B=49050660
+mem_heap_extra_B=17177020
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=19
+#-----------
+time=4858123432
+mem_heap_B=49061584
+mem_heap_extra_B=17196456
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=20
+#-----------
+time=5146614467
+mem_heap_B=49025108
+mem_heap_extra_B=17144708
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=21
+#-----------
+time=5319702941
+mem_heap_B=49066088
+mem_heap_extra_B=17195904
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=22
+#-----------
+time=5608158431
+mem_heap_B=49037848
+mem_heap_extra_B=17149712
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=23
+#-----------
+time=5838917326
+mem_heap_B=49024700
+mem_heap_extra_B=17143988
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=24
+#-----------
+time=6185074548
+mem_heap_B=49061908
+mem_heap_extra_B=17189172
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=25
+#-----------
+time=6358142093
+mem_heap_B=49069988
+mem_heap_extra_B=17204020
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=6588891355
+mem_heap_B=49065308
+mem_heap_extra_B=17194564
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=27
+#-----------
+time=6877359783
+mem_heap_B=49040932
+mem_heap_extra_B=17153324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=28
+#-----------
+time=7165777273
+mem_heap_B=49041440
+mem_heap_extra_B=17152704
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=29
+#-----------
+time=7537010835
+mem_heap_B=49025428
+mem_heap_extra_B=17143092
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=30
+#-----------
+time=7735184290
+mem_heap_B=49022768
+mem_heap_extra_B=17141384
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=31
+#-----------
+time=7933346038
+mem_heap_B=49057472
+mem_heap_extra_B=17190424
+mem_stacks_B=0
+heap_tree=detailed
+n8: 49057472 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 24000000 0x1092AB: readInput() (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+  n0: 24000000 0x108D52: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n2: 7496524 0x10A112: void std::vector<int, std::allocator<int> >::_M_realloc_insert<int const&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int const&) (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+  n1: 4002292 0x10950A: readInput() (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+   n0: 4002292 0x108D52: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+  n1: 3494232 0x109522: readInput() (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+   n0: 3494232 0x108D52: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n0: 4800000 0x108E11: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n1: 4800000 0x10A2B1: std::vector<Node*, std::allocator<Node*> >::_M_default_append(unsigned long) (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+  n1: 4800000 0x109569: readInput() (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+   n0: 4800000 0x108D52: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n0: 2400000 0x108D6B: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n0: 2400000 0x108D8B: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n0: 2400000 0x108DAB: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n0: 760948 in 12 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=32
+#-----------
+time=8230602107
+mem_heap_B=49074096
+mem_heap_extra_B=17207136
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=8527863390
+mem_heap_B=49074736
+mem_heap_extra_B=17208384
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=34
+#-----------
+time=8726030067
+mem_heap_B=49064912
+mem_heap_extra_B=17197392
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=35
+#-----------
+time=9023268230
+mem_heap_B=49034088
+mem_heap_extra_B=17149192
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=36
+#-----------
+time=9221438431
+mem_heap_B=49066980
+mem_heap_extra_B=17197444
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=37
+#-----------
+time=9419614249
+mem_heap_B=49076264
+mem_heap_extra_B=17209480
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=38
+#-----------
+time=9716885047
+mem_heap_B=49039324
+mem_heap_extra_B=17149740
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=39
+#-----------
+time=9915048538
+mem_heap_B=49040984
+mem_heap_extra_B=17150848
+mem_stacks_B=0
+heap_tree=detailed
+n8: 49040984 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 24000000 0x1092AB: readInput() (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+  n0: 24000000 0x108D52: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n2: 7496524 0x10A112: void std::vector<int, std::allocator<int> >::_M_realloc_insert<int const&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int const&) (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+  n1: 4002292 0x10950A: readInput() (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+   n0: 4002292 0x108D52: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+  n1: 3494232 0x109522: readInput() (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+   n0: 3494232 0x108D52: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n0: 4800000 0x108E11: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n1: 4800000 0x10A2B1: std::vector<Node*, std::allocator<Node*> >::_M_default_append(unsigned long) (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+  n1: 4800000 0x109569: readInput() (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+   n0: 4800000 0x108D52: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n0: 2400000 0x108D6B: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n0: 2400000 0x108D8B: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n0: 2400000 0x108DAB: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n0: 744460 in 12 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=40
+#-----------
+time=10113248069
+mem_heap_B=49041956
+mem_heap_extra_B=17152692
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=41
+#-----------
+time=10410519950
+mem_heap_B=49066288
+mem_heap_extra_B=17195216
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=42
+#-----------
+time=10707794809
+mem_heap_B=49071184
+mem_heap_extra_B=17202208
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=43
+#-----------
+time=11005047959
+mem_heap_B=49036440
+mem_heap_extra_B=17146024
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=44
+#-----------
+time=11203223249
+mem_heap_B=49070376
+mem_heap_extra_B=17200488
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=45
+#-----------
+time=11401404993
+mem_heap_B=49064004
+mem_heap_extra_B=17196740
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=46
+#-----------
+time=11599562794
+mem_heap_B=49063020
+mem_heap_extra_B=17195836
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=47
+#-----------
+time=11797729454
+mem_heap_B=49014076
+mem_heap_extra_B=17128660
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=12095004699
+mem_heap_B=49030560
+mem_heap_extra_B=17138288
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=49
+#-----------
+time=12293166631
+mem_heap_B=49059564
+mem_heap_extra_B=17186636
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=50
+#-----------
+time=12456938070
+mem_heap_B=49065576
+mem_heap_extra_B=17198104
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=51
+#-----------
+time=12620717428
+mem_heap_B=49039520
+mem_heap_extra_B=17161984
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=52
+#-----------
+time=12784516630
+mem_heap_B=49067196
+mem_heap_extra_B=17199884
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=53
+#-----------
+time=12948308547
+mem_heap_B=49019680
+mem_heap_extra_B=17128032
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=54
+#-----------
+time=13112106753
+mem_heap_B=49074548
+mem_heap_extra_B=17205716
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=55
+#-----------
+time=13275886484
+mem_heap_B=49032192
+mem_heap_extra_B=17153136
+mem_stacks_B=0
+heap_tree=detailed
+n8: 49032192 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 24000000 0x1092AB: readInput() (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+  n0: 24000000 0x108D52: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n2: 7496524 0x10A112: void std::vector<int, std::allocator<int> >::_M_realloc_insert<int const&>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int> > >, int const&) (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+  n1: 4002292 0x10950A: readInput() (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+   n0: 4002292 0x108D52: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+  n1: 3494232 0x109522: readInput() (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+   n0: 3494232 0x108D52: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n0: 4800000 0x108E11: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n1: 4800000 0x10A2B1: std::vector<Node*, std::allocator<Node*> >::_M_default_append(unsigned long) (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+  n1: 4800000 0x109569: readInput() (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+   n0: 4800000 0x108D52: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n0: 2400000 0x108D6B: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n0: 2400000 0x108D8B: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n0: 2400000 0x108DAB: main (in /mnt/c/Users/joaof/OneDrive - Universidade de Lisboa/code/c++/GraphAnalyzer/a.out)
+ n0: 735668 in 12 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=56
+#-----------
+time=13439671968
+mem_heap_B=49071680
+mem_heap_extra_B=17206280
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=57
+#-----------
+time=13603456388
+mem_heap_B=49039528
+mem_heap_extra_B=17160840
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=58
+#-----------
+time=13767251927
+mem_heap_B=49067752
+mem_heap_extra_B=17199104
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=59
+#-----------
+time=13931029776
+mem_heap_B=49045664
+mem_heap_extra_B=17167880
+mem_stacks_B=0
+heap_tree=empty
