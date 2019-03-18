@@ -13,7 +13,7 @@ using namespace std;
 * Number of SCCs
 * Graph IDs (1 for each)
 * Number articulation points
-* Biggest SCC if all artic. points decide to collectively fuck off to a better place
+* Size of biggest SCC if all artic. points decide to collectively fuck off to a better place
 */
 
 // ###################### Global variables ################################################
@@ -22,12 +22,14 @@ int nodesNum;
 int connectNum;
 vector<Node *> nodes;
 vector<int *> SCCs; // {max ID of graph, number of nodes}
-int SccCount;
+int sccCount;
+int apCount;
 int biggestSCC;
 deque<int> dequeL;
 int *d;
 int *low;
 int *parent;
+bool *ap;
 
 // ###################### Node ################################################
 class Node
@@ -54,36 +56,21 @@ class Node
     ~Node() {}
 };
 
-/*
-class Scc
-{
-    int id;
-    int root; // TODO: optional?
-    vector<int> nodes;
-};
-*/
-
 // ###################### Input Handling ################################################
 void readInput()
 {
-
-    printf("Reading\n");
-
     if (!scanf("%u", &nodesNum) || !scanf("%u", &connectNum))
         exit(-1);
     nodes.resize(nodesNum);
-
-    printf("Nodes: %d\nConnections: %d\n", nodesNum, connectNum);
 
     // Initialize the nodes
     for (int i = 0; i < nodesNum; i++)
         nodes[i] = new Node(i + 1);
 
-    int routes[2] = {0};
+    int routes[2] = {0, 0};
     while (scanf("%u %u", &routes[0], &routes[1]) > 0)
     {
         --connectNum;
-
         // Update routes
         (*nodes[routes[0] - 1]).addConnection(routes[1] - 1);
         (*nodes[routes[1] - 1]).addConnection(routes[0] - 1);
@@ -104,34 +91,59 @@ void tarjanVisit(int &visited, int &current)
     visited++; // ???
     dequeL.push_back(current);
 
+    int children = 0;
     for (int a : connections)
     {
         if (d[a] == -1 || EXISTS(dequeL, a))
         {
-            if (d[a] < 0)
+            ++children;
+            if (d[a] == -1)
+            {
+                parent[a] = current;
                 tarjanVisit(visited, a);
+            }
+
+            printf("Node %d: parent[%d]=%d, children=%d, low[a]=%d\n", d[current], current, parent[current], children, low[a]);
+
+            // (1) u is root of DFS tree and has two or more chilren.
+            if (parent[current] == -1 && children > 1 && !ap[current])
+            {
+                ap[current] = true;
+                ++apCount;
+                printf("(1)Found AP: %d\n", current + 1);
+            }
+
+            // (2) If u is not root and low value of one of its child is more
+            // than discovery value of u.
+            if (parent[current] != -1 && low[a] >= d[current])
+            {
+                ap[current] = true;
+                ++apCount;
+                printf("(2)Found AP: %d\n", current + 1);
+            }
             low[current] = MIN(low[current], low[a]);
         }
     }
 
     if (d[current] == low[current])
     {
-        ++SccCount;
-        int nodeCount = 1;
+        ++sccCount;
+        int nodeCount = 0, nodeCountWithDiscount = 0;
         int v = dequeL.back();
         int max = v;
         while (current != v)
         {
             if (v > max)
                 max = v;
+            if (!ap[v])
+                ++nodeCountWithDiscount;
+            nodeCount++;
 
             dequeL.pop_back();
             v = dequeL.back();
-
-            nodeCount++;
         }
 
-        SCCs.push_back(new int[2]{max, nodeCount});
+        SCCs.push_back(new int[3]{max, nodeCount, nodeCountWithDiscount});
     }
 }
 
@@ -142,12 +154,14 @@ void SccTarjan(int nodesNum, vector<Node *> routers)
 
     int i;
 
-    for (i = 0; i < nodesNum; i++) // TODO: find a cooler way initiliaze
+    // Initiliaze d, parent and low arrays to -1
+    for (i = 0; i < nodesNum; i++)
     {
-        d[i] = -1;
-        low[i] = -1;
+        d[i] = low[i] = parent[i] = -1;
+        ap[i] = false;
     }
 
+    // Run DFS
     for (i = 0; i < nodesNum; i++)
         if (d[i] == -1)
             tarjanVisit(visited, i);
@@ -160,23 +174,30 @@ int main()
     nodesNum = 0;
     connectNum = 0;
     biggestSCC = 0;
-    SccCount = 0;
+    sccCount = 0;
+    apCount = 0;
 
     readInput();
     d = new int[nodesNum];
     low = new int[nodesNum];
     parent = new int[nodesNum];
-    for (int i = 0; i < nodesNum; i++)
-        printf("%d:%d\n", i, parent[i]);
+    ap = new bool[nodesNum];
 
     SccTarjan(nodesNum, nodes);
 
     // Output
-    printf("Scc: %d\n", SccCount);
+    printf("Scc: %d\n", sccCount);
     printf("IDS:");
-
+    int maxDiscountedGraph = 0;
     for (int *scc : SCCs)
+    {
         printf(" %d", scc[0] + 1);
+        if (scc[2] > maxDiscountedGraph)
+            maxDiscountedGraph = scc[2];
+    }
+
+    printf("\nAPs: %d\n", apCount);
+    printf("Max Graph: %d\n", maxDiscountedGraph);
 
     // Free allocs
     free(d);
