@@ -2,9 +2,9 @@
 #include <vector>
 #include <algorithm>
 #include <string>
-#include <deque>
+#include <stack>
 
-#define EXISTS(a, n) (find(begin(a), end(a), n) != end(a))
+//#define EXISTS(a, n) (find(a.rbegin(), a.rend(), n) != a.end())
 #define MIN(a, b) (a < b ? a : b)
 
 using namespace std;
@@ -25,16 +25,16 @@ vector<int *> SCCs; // {max ID of graph, number of nodes}
 int sccCount;
 int apCount;
 int biggestSCC;
-deque<int> dequeL;
+stack<int> stackL;
 int *d;
 int *low;
 int *parent;
 bool *ap;
+bool *stackU;
 
 // ###################### Node ################################################
 class Node
 {
-
     vector<int> _connects;
 
   public:
@@ -63,9 +63,10 @@ void readInput()
         (*nodes[routes[0] - 1]).addConnection(routes[1] - 1);
         (*nodes[routes[1] - 1]).addConnection(routes[0] - 1);
     }
-    // Initialize the nodes
+    /*// Initialize the nodes
     for (int i = 0; i < nodesNum; i++)
         (*nodes[i]).getConnections().shrink_to_fit();
+    */
 
     if (connectNum != 0)
         exit(-1);
@@ -81,17 +82,18 @@ int tarjanVisit(int &visited, int &current)
     vector<int> connections = curr.getConnections();
     d[current] = low[current] = visited;
     visited++; // ???
-    dequeL.push_back(current);
+    stackL.push(current);
+    stackU[current] = true;
 
     int children = 0;
     for (int a : connections)
     {
         //printf("Node %d checking connection %d\n", current + 1, a + 1);
-        if (d[a] == -1 || EXISTS(dequeL, a))
+        if (d[a] == -1 || stackU[a])
         {
-            ++children;
             if (d[a] == -1)
             {
+                children++;
                 // printf("Node %d visiting %d\n", current + 1, a + 1);
                 parent[a] = current;
                 weight += tarjanVisit(visited, a);
@@ -105,7 +107,7 @@ int tarjanVisit(int &visited, int &current)
                 {
                     ap[current] = true;
                     ++apCount;
-                    //printf("(1)Found AP: %d\n", current + 1);
+                    // printf("(1)Found AP: %d\n", current + 1);
                 }
 
                 // (2) If u is not root and low value of one of its child is more
@@ -114,7 +116,7 @@ int tarjanVisit(int &visited, int &current)
                 {
                     ap[current] = true;
                     ++apCount;
-                    // printf("(2)Found AP: %d\n", current + 1);
+                    //printf("(2)Found AP: %d\n", current + 1);
                 }
                 low[current] = MIN(low[current], low[a]);
             }
@@ -128,22 +130,19 @@ int tarjanVisit(int &visited, int &current)
     if (d[current] == low[current])
     {
         ++sccCount;
-        int nodeCount = 0, nodeCountWithDiscount = 0;
-        int v = dequeL.back();
+        int nodeCount = 0;
+        int v = stackL.top();
         int max = v;
         while (current != v)
         {
             if (v > max)
                 max = v;
-            if (!ap[v])
-                ++nodeCountWithDiscount;
             nodeCount++;
-
-            dequeL.pop_back();
-            v = dequeL.back();
+            stackL.pop();
+            v = stackL.top();
         }
 
-        SCCs.push_back(new int[3]{max, nodeCount, nodeCountWithDiscount});
+        SCCs.push_back(new int[3]{max, nodeCount});
     }
     //printf("Returning from %d with weight: %d\n", current + 1, weight);
     if (ap[current])
@@ -154,15 +153,15 @@ int tarjanVisit(int &visited, int &current)
 void SccTarjan(int nodesNum, vector<Node *> routers)
 {
     int visited = 0;
-    dequeL = deque<int>();
+    stackL = stack<int>();
 
     int i;
 
-    // Initiliaze d, parent and low arrays to -1
+    // Initiliaze util arrays
     for (i = 0; i < nodesNum; i++)
     {
         d[i] = low[i] = parent[i] = -1;
-        ap[i] = false;
+        ap[i] = stackU[i] = false;
     }
 
     // Run DFS
@@ -196,6 +195,7 @@ int main()
     low = new int[nodesNum];
     parent = new int[nodesNum];
     ap = new bool[nodesNum];
+    stackU = new bool[nodesNum];
 
     SccTarjan(nodesNum, nodes);
 
@@ -205,7 +205,7 @@ int main()
     // Number of IDs
     sort(SCCs.begin(), SCCs.end(), compare);
     printf("%d", SCCs.front()[0] + 1);
-    for (vector<int *>::iterator it = SCCs.begin()+1; it != SCCs.end(); ++it)
+    for (vector<int *>::iterator it = SCCs.begin() + 1; it != SCCs.end(); ++it)
         printf(" %d", (*it)[0] + 1);
     // Number of APs
     printf("\n%d\n", apCount);
