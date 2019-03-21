@@ -1,0 +1,13 @@
+
+ERRO: #SubR * #M não pode ser menor do que #P
+
+Utilização: gerador #P #R #SubR #m #M seed
+
+	#P: número de routers na rede
+	#R: número de ligações entre routers na rede
+	#SubR: número de sub-redes
+	#m: número mínimo de routers em cada sub-rede (opcional, default: 1)
+	#M: número máximo de routers em cada sub-rede (opcional, default: 10)
+	seed: seed para o gerador aleatório (opcional, default: 0)
+
+
