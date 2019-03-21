@@ -28,7 +28,7 @@ class Node;
 int nodesNum;         // Number of vertices
 int connectNum;       // Number of edges
 vector<Node *> nodes; // Vector of vertices
-vector<int *> SCCs;   // Vector of SCCs, each containing {max ID of graph, number of nodes}
+vector<int> SCCs;     // Vector of SCCs, each containing {max ID of graph, number of nodes}
 int sccCount;         // Number of SCCs
 int apCount;          // Number of articulation points
 int biggestSCC;       // Size of the biggest SCC
@@ -83,9 +83,8 @@ int tarjanVisit(int &visited, int &current)
 {
     int weight = 0;
 
-    Node curr = *(nodes[current]);                   // The vertex being visited
-    vector<int> connections = curr.getConnections(); // The adjancencies of the current vertex
-    d[current] = low[current] = visited;             // Fill in the d and low arrays
+    vector<int> connections = (*(nodes[current])).getConnections(); // The adjancencies of the current vertex
+    d[current] = low[current] = visited;                            // Fill in the d and low arrays
     visited++;
     // Put the vertex in the stack
     stackL.push(current);
@@ -148,7 +147,7 @@ int tarjanVisit(int &visited, int &current)
             v = stackL.top();
         }
 
-        SCCs.push_back(new int[3]{max, nodeCount});
+        SCCs.push_back(max);
     }
 
     if (ap[current])
@@ -183,9 +182,9 @@ void SccTarjan(int nodesNum, vector<Node *> routers)
 }
 
 // For the sorting algorithm
-bool compare(const int *a, const int *b)
+bool compare(const int a, const int b)
 {
-    return a[0] < b[0];
+    return a < b;
 }
 
 // ###################### Main ################################################################
@@ -215,9 +214,9 @@ int main()
     printf("%d\n", sccCount);
     // (2) Number of IDs
     sort(SCCs.begin(), SCCs.end(), compare);
-    printf("%d", SCCs.front()[0] + 1);
-    for (vector<int *>::iterator it = SCCs.begin() + 1; it != SCCs.end(); ++it)
-        printf(" %d", (*it)[0] + 1);
+    printf("%d", SCCs.front() + 1);
+    for (vector<int>::iterator it = SCCs.begin() + 1; it != SCCs.end(); ++it)
+        printf(" %d", (*it) + 1);
     // (3) Number of APs
     printf("\n%d\n", apCount);
     // (4) Size of bigges SCC without APs
@@ -232,8 +231,6 @@ int main()
 
     for (Node *node : nodes)
         delete node;
-    for (int *scc : SCCs)
-        delete[] scc;
 
     return 0;
 }
