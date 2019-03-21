@@ -9,6 +9,14 @@
 using namespace std;
 
 /*
+Input:
+* Number of vertices (nodesNum)
+* Number of edges (connectNum)
+* Edge (e.g. 2 4)
+* Edge (e.g. 1 3)
+* ...
+
+Output
 * Number of SCCs
 * Graph IDs (1 for each)
 * Number articulation points
@@ -17,24 +25,24 @@ using namespace std;
 
 // ###################### Global variables ####################################################
 class Node;
-int nodesNum;           // Number of vertices
-int connectNum;         // Number of edges
-vector<Node *> nodes;   // Vector of vertices
-vector<int *> SCCs;     // Vector of SCCs, each containing {max ID of graph, number of nodes}
-int sccCount;           // Number of SCCs
-int apCount;            // Number of articulation points
-int biggestSCC;         // Size of the biggest SCC
-stack<int> stackL;      // Stack for the Tarjan Algorithm
-int *d;                 // Array d for the Tarjan Algorithm
-int *low;               // Array low for the Tarjan Algorithm
-int *parent;            // Array that contains the parent of each vertex
-bool *ap;               // Checklist  a points is an articulation point
-bool *stackU;           // Checkilst if a vertex is in the stack
+int nodesNum;         // Number of vertices
+int connectNum;       // Number of edges
+vector<Node *> nodes; // Vector of vertices
+vector<int *> SCCs;   // Vector of SCCs, each containing {max ID of graph, number of nodes}
+int sccCount;         // Number of SCCs
+int apCount;          // Number of articulation points
+int biggestSCC;       // Size of the biggest SCC
+stack<int> stackL;    // Stack for the Tarjan Algorithm
+int *d;               // Array d for the Tarjan Algorithm
+int *low;             // Array low for the Tarjan Algorithm
+int *parent;          // Array that contains the direct parent of each vertex
+bool *ap;             // Checklist if a point i an articulation point
+bool *stackU;         // Checklist if a vertex is in the stack
 
 // ###################### Node ################################################################
 class Node
 {
-    vector<int> _connects;  // Vector of adjacencies of the vertex
+    vector<int> _connects; // Vector of adjacencies of the vertex
 
   public:
     Node() { _connects = vector<int>(); }
@@ -49,14 +57,14 @@ void readInput()
     // Read the number of vertexes and edges
     if (!scanf("%u", &nodesNum) || !scanf("%u", &connectNum))
         exit(-1);
+    // Shorten the nodes list
     nodes.resize(nodesNum);
 
     // Initialize the nodes
     for (int i = 0; i < nodesNum; i++)
         nodes[i] = new Node();
 
-
-    // Update the adjancies list of each vertex
+    // Update the adjacencies list of each vertex
     int routes[2] = {0, 0};
     while (scanf("%u %u", &routes[0], &routes[1]) > 0)
     {
@@ -75,15 +83,15 @@ int tarjanVisit(int &visited, int &current)
 {
     int weight = 0;
 
-    Node curr = *(nodes[current]);                      // The vertex being visited
-    vector<int> connections = curr.getConnections();    // The adjancencies of the current vertex 
-    d[current] = low[current] = visited;                // Fill in the d and low arrays
+    Node curr = *(nodes[current]);                   // The vertex being visited
+    vector<int> connections = curr.getConnections(); // The adjancencies of the current vertex
+    d[current] = low[current] = visited;             // Fill in the d and low arrays
     visited++;
     // Put the vertex in the stack
-    stackL.push(current);                               
+    stackL.push(current);
     stackU[current] = true;
 
-    int children = 0;   // Number of vertex's children
+    int children = 0; // Number of vertex's children
     for (int a : connections)
     {
         if (d[a] == -1 || stackU[a])
@@ -97,16 +105,17 @@ int tarjanVisit(int &visited, int &current)
                 if (weight > biggestSCC)
                     biggestSCC = weight;
 
-                // Conditions if a vertex is articulation point:
-                // (1) u is root of DFS tree and has two or more chilren.
+                // Check if vertex is an articulation point:
+
+                //  Check if vertex is root of DFS tree and has two or more chilren.
                 if (parent[current] == -1 && children > 1 && !ap[current] && !ap[current])
                 {
                     ap[current] = true;
                     ++apCount;
                 }
 
-                // (2) If u is not root and low value of one of its child is more
-                // than discovery value of u.
+                // Check if vertex is not root and low-link of one of its child is bigger
+                // than discovery value.
                 if (parent[current] != -1 && low[a] >= d[current] && !ap[current])
                 {
                     ap[current] = true;
@@ -121,16 +130,17 @@ int tarjanVisit(int &visited, int &current)
         }
     }
 
-    // Save a new SCC
+    // Store a new SCC
     if (d[current] == low[current])
     {
         ++sccCount;
         int nodeCount = 0;
         int v = stackL.top();
         int max = v;
-        // Find the biggest id in the SCC (it is the SCC's ID)
+        // Check the whole stack untill
         while (current != v)
         {
+            // Find the biggest id in the SCC
             if (v > max)
                 max = v;
             nodeCount++;
@@ -140,7 +150,7 @@ int tarjanVisit(int &visited, int &current)
 
         SCCs.push_back(new int[3]{max, nodeCount});
     }
-    
+
     if (ap[current])
         return 0;
     return weight + 1;
@@ -178,7 +188,6 @@ bool compare(const int *a, const int *b)
     return a[0] < b[0];
 }
 
-
 // ###################### Main ################################################################
 int main()
 {
@@ -197,7 +206,6 @@ int main()
     parent = new int[nodesNum];
     ap = new bool[nodesNum];
     stackU = new bool[nodesNum];
-
     SccTarjan(nodesNum, nodes);
 
     // Output:
@@ -214,12 +222,16 @@ int main()
     printf("%d\n", biggestSCC);
 
     // Free allocs
-    free(d);
-    free(low);
-    free(parent);
-    free(ap);
-    SCCs.clear();
-    nodes.clear();
+    delete[] d;
+    delete[] low;
+    delete[] parent;
+    delete[] ap;
+    delete[] stackU;
+
+    for (Node *node : nodes)
+        delete node;
+    for (int *scc : SCCs)
+        delete[] scc;
 
     return 0;
 }
