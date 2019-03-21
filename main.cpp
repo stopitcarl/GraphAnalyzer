@@ -199,7 +199,9 @@ int main()
     sccCount = 0;
     apCount = 0;
 
+    // Input
     readInput();
+
     // Initialize all the arrays
     d = new int[nodesNum];
     low = new int[nodesNum];
