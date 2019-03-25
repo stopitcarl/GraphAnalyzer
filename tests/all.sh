@@ -1,4 +1,4 @@
-tests='tests/*.in';
+tests='*.in';
 
 prog=$1;
 
